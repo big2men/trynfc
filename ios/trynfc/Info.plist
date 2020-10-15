@@ -54,4 +54,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
+<key>NFCReaderUsageDescription</key>
+<string>YOUR_PRIVACY_DESCRIPTION</string>
 </plist>

@@ -46,6 +46,7 @@
 		00E356F21AD99517003FC87E /* trynfcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = trynfcTests.m; sourceTree = "<group>"; };
 		01D9AE2FD77D3F732CFE7DD9 /* Pods-trynfc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-trynfc.release.xcconfig"; path = "Target Support Files/Pods-trynfc/Pods-trynfc.release.xcconfig"; sourceTree = "<group>"; };
 		038EA204C78FFD6B362A887C /* libPods-trynfc-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-trynfc-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B501A8625382D640059D86C /* trynfc.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = trynfc.entitlements; path = trynfc/trynfc.entitlements; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* trynfc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trynfc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = trynfc/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = trynfc/AppDelegate.m; sourceTree = "<group>"; };
@@ -125,6 +126,7 @@
 		13B07FAE1A68108700A75B9A /* trynfc */ = {
 			isa = PBXGroup;
 			children = (
+				0B501A8625382D640059D86C /* trynfc.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +196,6 @@
 				A450E86756EAA5DA40785B33 /* Pods-trynfc-tvOSTests.debug.xcconfig */,
 				F17D2D76117BD70A976C215D /* Pods-trynfc-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -655,6 +656,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = trynfc/trynfc.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = trynfc/Info.plist;
@@ -678,6 +680,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = trynfc/trynfc.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = trynfc/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
