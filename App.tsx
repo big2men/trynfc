@@ -7,12 +7,7 @@ const Component = () => {
   useEffect(() => {
     NfcManager.start();
     NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: any) => {
-      console.warn(
-        'tag',
-        tag.ndefMessage.map((m: {payload: number[]}) =>
-          String.fromCharCode(...m.payload),
-        ),
-      );
+      console.warn('tag', tag);
       NfcManager.setAlertMessageIOS('I got your tag!');
       NfcManager.unregisterTagEvent().catch(() => 0);
     });
