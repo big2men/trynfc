@@ -1,118 +1,75 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
+/* eslint-disable react-native/no-inline-styles */
+import React, {useEffect} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import NfcManager, {NfcEvents} from 'react-native-nfc-manager';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+const Component = () => {
+  useEffect(() => {
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, (tag: any) => {
+      console.warn(
+        'tag',
+        tag.ndefMessage.map((m: {payload: number[]}) =>
+          String.fromCharCode(...m.payload),
+        ),
+      );
+      NfcManager.setAlertMessageIOS('I got your tag!');
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    });
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+    return () => {
+      NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    };
+  }, []);
 
-declare const global: {HermesInternal: null | {}};
+  const onCancel = () => {
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  };
 
-const App = () => {
+  const onTest = async () => {
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
+  };
+
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <View
+      style={{
+        padding: 20,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Text>NFC Demo</Text>
+      <TouchableOpacity
+        style={{
+          padding: 10,
+          width: 200,
+          margin: 20,
+          borderWidth: 1,
+          borderColor: 'black',
+        }}
+        onPress={onTest}>
+        <Text>Test</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{
+          padding: 10,
+          width: 200,
+          margin: 20,
+          borderWidth: 1,
+          borderColor: 'black',
+        }}
+        onPress={onCancel}>
+        <Text>Cancel Test</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+export default Component;
