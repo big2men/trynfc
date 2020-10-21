@@ -3,8 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform,
-  Alert,
 } from 'react-native';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 
@@ -45,24 +43,21 @@ class AppV2Apdu extends React.Component {
   _test = async () => {
     try {
       let tech = [
-        NfcTech.Ndef,
+        NfcTech.IsoDep,
+        // NfcTech.Ndef,
         NfcTech.NfcA,
         NfcTech.NfcB,
         NfcTech.NfcF,
         NfcTech.NfcV,
-        NfcTech.IsoDep,
         NfcTech.MifareClassic,
         NfcTech.MifareUltralight,
         NfcTech.MifareIOS,
         NfcTech.Iso15693IOS,
         NfcTech.FelicaIOS,
       ];
-      const techResp = await NfcManager.requestTechnology(tech, {
+      await NfcManager.requestTechnology(tech, {
         alertMessage: 'Ready to detect technology'
       });
-
-      console.log('tech: ', techResp);
-      Alert.alert(`Technology`, techResp)
 
       // the NFC uid can be found in tag.id
       let tag = await NfcManager.getTag();
