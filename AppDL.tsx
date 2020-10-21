@@ -117,8 +117,9 @@ class AppV2Apdu extends React.Component {
           throw new Error('Error Read Binary Command');
         }
 
-        // ここから先がうまくうごいていない模様
         const data = rbResp.response;
+        console.log('data: ', toHexString(data))
+        console.log('data length: ', data.length)
         const fields: TLVField[] = [];
         let i = 0;
         while (i < data.length) {
@@ -142,11 +143,15 @@ class AppV2Apdu extends React.Component {
             i += 1
           }
           i += 1
-          let endIndex = length + i - 1
-          let value = data.slice(i, endIndex - i)
-          i = endIndex + 1
+          let endIndex = i + length
+          let value = data.slice(i, endIndex)
+          console.log('length', length)
+          console.log('value', toHexString(value))
+          console.log('value length', value.length)
+          i = endIndex
 
           fields.push({ tag, length, value })
+          console.log('index:' + i.toString(), { tag, length, value });
         }
 
         console.log('fields', fields)
@@ -157,13 +162,17 @@ class AppV2Apdu extends React.Component {
         let cardManufactureIdentifier: number | null = null;
         let cryptographicFunctionIdentifier: number | null = null;
 
+        // 45, 46 タグは 2-4 の頁を参照
+        // @see https://www.npa.go.jp/laws/notification/koutuu/menkyo/menkyo20190403_070.pdf
         fields.forEach(field => {
           switch (field.tag[0]) {
             case 0x45: {
               specificationVersionNumber = field.value.slice(0, 3).join('') //Todo: Data(x) -> shift_jis
-              let issuanceDateString = field.value.slice(3, 4).join()
+              let issuanceDateString = field.value.slice(3, 7).join()
+              console.log('issuanceDate: ', issuanceDateString)
               issuanceDate = new Date(issuanceDateString)
-              let expirationDateString = field.value.slice(7, 4).join()
+              let expirationDateString = field.value.slice(7, 11).join()
+              console.log('expirationData: ', expirationDateString)
               expirationDate = new Date(expirationDateString)
               console.log({ issuanceDateString, expirationDateString })
               break;
@@ -203,6 +212,10 @@ type TLVField = {
   tag: number[],
   length: number,
   value: number[]
+}
+
+function toHexString(ns: number[]): string {
+  return ns.map(n => `0x${Number(n).toString(16)}`).join(', ');
 }
 
 export default AppV2Apdu;
